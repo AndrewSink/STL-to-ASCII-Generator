@@ -1,0 +1,49 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+html, 
+
+body
+
+
+{
+    overflow: hidden;
+    background-color: black;
+    text-align: center; 
+ 
+}
+
+.webgl
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
+
+form {
+    
+    font-family: 'Courier New';
+    /* position: absolute; */
+    display: block;
+    color: whitesmoke;
+    /* z-index: 99; */
+    left: 0%;
+    top: 0%;
+    }
+
+#kofi {
+    text-align: left;  
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+input[type="button"] {
+  color: black;
+  margin: 6px;
+}
+
+
