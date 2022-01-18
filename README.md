@@ -1,4 +1,4 @@
-# STL-to-ASCII-Generator
+# STL to ASCII Generator
 
 Try it out: [STL to ASCII Generator](https://andrewsink.github.io/STL-to-ASCII-Generator/)
 
