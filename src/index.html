@@ -3,16 +3,15 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        <meta id="ascii" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
         <title>STL To ASCII Generator</title>
     </head>
+
+
 
     <body>
         <form method="post" enctype="multipart/form-data" data-html2canvas-ignore="true">
             <div id="top">
-
-
-
 
                 <input id="file-selector" name="files[]" style="display:none;" type="file">
                 <input type="button" id="input-button" value="Upload STL" accept=".stl"
@@ -21,6 +20,8 @@
                 <input id="lightDark" type="button" value="Dark/Light Mode">
 
                 <input id="rotateButton" type="button" value="Rotate">
+
+                <input id="copyASCII" type="button" value="Download Text File">
 
                 <br>
 
@@ -38,10 +39,11 @@
                         document.getElementById('screenshotButton').style.display = "none";
 
                         document.getElementById('input-button').style.display = "none";
+
+                        document.getElementById('copyASCII').style.display = "none";
                     } else {
                     }
                 </script>
-
 
             </div>
             <div id="kofi">
@@ -57,7 +59,6 @@
                     type='text/javascript'>kofiwidget2.init('Want to buy me a coffee?', '#29abe0', 'A0A35L8LW'); kofiwidget2.draw();</script>
             </div>
         </form>
-
     </body>
 
 </html>

@@ -72,6 +72,8 @@ createEffect()
 
 document.body.appendChild(effect.domElement)
 
+document.getElementById("ascii").style.whiteSpace = "prewrap"
+
 stlLoader.load(
     './models/test2.stl',
     function (geometry) {
@@ -244,3 +246,23 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     effect.setSize(window.innerWidth, window.innerHeight);
 }
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+document.getElementById("copyASCII").addEventListener("click", function () {
+    var text = document.getElementsByTagName("table")[0].innerText
+    var filename = "ASCII.txt";
+
+    download(filename, text);
+}, false);
