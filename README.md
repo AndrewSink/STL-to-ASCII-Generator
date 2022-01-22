@@ -14,7 +14,7 @@ You can enter your own custom text to change the characters used in the ASCII im
 
 Future Development:
 
-- [ ] Copy ASCII image to clipboard
+- [x] Copy ASCII image to clipboard (thanks [donno2048](https://github.com/donno2048)!)
 - [ ] Change lighting orientation
 - [ ] Add screenshot on mobile
 
