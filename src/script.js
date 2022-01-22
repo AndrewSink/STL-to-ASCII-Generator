@@ -266,3 +266,13 @@ document.getElementById("copyASCII").addEventListener("click", function () {
 
     download(filename, text);
 }, false);
+
+document.getElementById("clipboardASCII").addEventListener("click", function () {
+    const textArea = document.createElement("textarea");
+    textArea.textContent = document.getElementsByTagName("td")[0].textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    window.alert("ASCII copied to clipboard");
+}, false);
