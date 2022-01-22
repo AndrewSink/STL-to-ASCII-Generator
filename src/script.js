@@ -247,22 +247,11 @@ function onWindowResize() {
     effect.setSize(window.innerWidth, window.innerHeight);
 }
 
-function download(filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-}
-
 document.getElementById("copyASCII").addEventListener("click", function () {
-    var text = document.getElementsByTagName("table")[0].innerText
-    var filename = "ASCII.txt";
-
-    download(filename, text);
+    const textArea = document.createElement("textarea");
+    textArea.textContent = document.getElementsByTagName("td")[0].textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
 }, false);
