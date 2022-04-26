@@ -269,7 +269,7 @@ document.getElementById("copyASCII").addEventListener("click", function () {
 
 document.getElementById("clipboardASCII").addEventListener("click", function () {
     const textArea = document.createElement("textarea");
-    textArea.textContent = document.getElementsByTagName("td")[0].textContent;
+    textArea.textContent = document.getElementsByTagName("td")[0].innerText;
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand('copy');
