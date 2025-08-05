@@ -1,12 +1,15 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
-module.exports = {
-  entry: './src/script.js', // your main JS file
+const devConfig = {
+  entry: './src/script.js',
   output: {
-    filename: 'bundle.js', // output file name
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  mode: 'development', // use 'production' for minified output
+  mode: 'development',
   module: {
     rules: [
       {
@@ -15,5 +18,41 @@ module.exports = {
       },
     ],
   },
-  devtool: 'source-map', // easier debugging
+  devtool: 'source-map',
+};
+
+const prodConfig = {
+  entry: './src/script.js',
+  output: {
+    filename: 'bundle.[contenthash].min.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
+  mode: 'production',
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({ filename: 'styles.[contenthash].min.css' }),
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin(),
+      new CssMinimizerPlugin(),
+    ],
+  },
+  devtool: false,
+};
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'production') {
+    return prodConfig;
+  }
+  return devConfig;
 };
