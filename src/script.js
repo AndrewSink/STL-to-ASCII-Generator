@@ -242,13 +242,15 @@ function lightDark() {
 document.getElementById('lightSlider').addEventListener('input', function (e) {
     const angleDeg = parseFloat(e.target.value);
     const angleRad = angleDeg * Math.PI / 180;
-    const radius = 420; // Distance from origin, similar to initial position
+    const radius = myMesh.geometry.boundingBox.max.z * 2; // Distance from origin, similar to initial position
     const y = 100; // Keep height constant
     // Calculate new position in XZ plane
     const x = Math.cos(angleRad) * radius;
     const z = Math.sin(angleRad) * radius;
     pointLight1.position.set(x, y, z);
 });
+
+
 
 window.addEventListener('resize', onWindowResize);
 
