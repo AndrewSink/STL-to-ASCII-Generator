@@ -1,0 +1,24 @@
+{
+  "name": "stl-to-ascii-generator-main",
+  "version": "1.0.0",
+  "description": "Try it out: [STL to ASCII Generator](https://andrewsink.github.io/STL-to-ASCII-Generator/)",
+  "main": "bundle.5f6951b3191a2214dc44.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --watch --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.101.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "three": "^0.179.1"
+  }
+}

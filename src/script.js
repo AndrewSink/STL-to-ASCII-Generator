@@ -80,6 +80,12 @@ stlLoader.load(
 
         myMesh.material = material;
         myMesh.geometry = geometry;
+        myMesh.scale.set(1, 1, 1); // Reset scale on model load
+        // Reset rotation sliders and mesh rotation
+        ['X', 'Y', 'Z'].forEach(axis => {
+            document.getElementById(`rotate${axis}Slider`).value = 0;
+            myMesh.rotation[axis.toLowerCase()] = 0;
+        });
 
         var tempGeometry = new THREE.Mesh(geometry, material)
         myMesh.position.copy = (tempGeometry.position)
@@ -105,15 +111,11 @@ stlLoader.load(
 
 
         function tick() {
-            if (rotateModel == true) {
-                const elapsedTime = clock.getElapsedTime()
-                myMesh.rotation.z = (elapsedTime) / 3
-                render()
-                window.requestAnimationFrame(tick)
-            } else {
-                render()
-                window.requestAnimationFrame(tick)
+            if (rotateModel) {
+                myMesh.rotation.z += 0.01; // Adjust speed as needed
             }
+            render()
+            window.requestAnimationFrame(tick)
         }
 
         function render() {
@@ -138,6 +140,12 @@ stlLoader.load(
                 tempGeometry = geometry;
                 myMesh.geometry = geometry;
                 myMesh.geometry.center()
+                myMesh.scale.set(1, 1, 1); // Reset scale on file upload
+                // Reset rotation sliders and mesh rotation
+                ['X', 'Y', 'Z'].forEach(axis => {
+                    document.getElementById(`rotate${axis}Slider`).value = 0;
+                    myMesh.rotation[axis.toLowerCase()] = 0;
+                });
 
                 myMesh.rotation.x = -90 * Math.PI / 180;
 
@@ -171,12 +179,6 @@ function takeScreenshot() {
         // link.target = '_blank';
         link.click();
     });
-}
-
-document.getElementById('rotateButton').addEventListener('click', rotateMode);
-
-function rotateMode() {
-    rotateModel = !rotateModel
 }
 
 document.getElementById('updateASCII').addEventListener('click', updateASCII);
@@ -237,6 +239,17 @@ function lightDark() {
     }
 }
 
+document.getElementById('lightSlider').addEventListener('input', function (e) {
+    const angleDeg = parseFloat(e.target.value);
+    const angleRad = angleDeg * Math.PI / 180;
+    const radius = 420; // Distance from origin, similar to initial position
+    const y = 100; // Keep height constant
+    // Calculate new position in XZ plane
+    const x = Math.cos(angleRad) * radius;
+    const z = Math.sin(angleRad) * radius;
+    pointLight1.position.set(x, y, z);
+});
+
 window.addEventListener('resize', onWindowResize);
 
 function onWindowResize() {
@@ -276,3 +289,20 @@ document.getElementById("clipboardASCII").addEventListener("click", function () 
     document.body.removeChild(textArea);
     window.alert("ASCII copied to clipboard");
 }, false);
+
+document.getElementById('scaleSlider').addEventListener('input', function (e) {
+    const scale = parseFloat(e.target.value);
+    myMesh.scale.set(scale, scale, scale);
+});
+
+// Rotation sliders logic
+['X', 'Y', 'Z'].forEach(axis => {
+    document.getElementById(`rotate${axis}Slider`).addEventListener('input', function (e) {
+        const value = parseFloat(e.target.value) * Math.PI / 180;
+        myMesh.rotation[axis.toLowerCase()] = value;
+    });
+});
+
+document.getElementById('rotateButton').addEventListener('click', function () {
+    rotateModel = !rotateModel;
+});
