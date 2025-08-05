@@ -19,3 +19,30 @@ Future Development:
 - [ ] Add screenshot on mobile
 
 Find this project useful? You can buy me a [coffee on Ko-Fi](https://ko-fi.com/andrewsink)!
+
+To contribute to this project, you need to install webpack.
+## Clone the Repository
+```bash
+git clone https://github.com/AndrewSink/STL-to-ASCII-Generator.git
+cd STL-to-ASCII-Generator
+```
+
+## Install dependencies
+```
+npm install
+```
+
+## Build the project
+```
+npm run build
+```
+
+## Start the server
+```
+npm start
+```
+
+### If you want to see live changes you can use watch:
+```
+npm run watch
+```
