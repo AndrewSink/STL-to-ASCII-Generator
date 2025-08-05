@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta id="ascii" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>STL To ASCII Generator</title>
-    <script defer="defer" src="bundle.5f6951b3191a2214dc44.js"></script>
-    <link href="main.css" rel="stylesheet">
+    <script defer="defer" src="bundle.f44395ed74b8180452a2.min.js"></script>
+    <link href="styles.bec3477de08f0feda47d.min.css" rel="stylesheet">
   </head>
   <body>
     <form method="post" enctype="multipart/form-data" data-html2canvas-ignore="true">
       <div id="top">
         <input id="file-selector" name="files[]" style="display:none" type="file"> 
         <input type="button" id="input-button" value="Upload STL" accept=".stl" onclick='document.getElementById("file-selector").click()'> 
-        <input id="lightDark" type="button" value="Dark/Light Mode"> 
+        <input id="lightDark" type="button" value="Dark/Light Mode">
         <input id="rotateButton" type="button" value="Rotate"> 
+        <label for="scaleSlider">Scale:</label>
+        <input id="scaleSlider" type="range" min="0.1" max="3" step="0.01" value="1" style="width:120px; vertical-align:middle;">
+        <label for="lightSlider">Light Angle:</label>
+        <input id="lightSlider" type="range" min="0" max="360" step="1" value="45" style="width:120px; vertical-align:middle;">
+        <label for="rotateXSlider">Rotate X:</label>
+        <input id="rotateXSlider" type="range" min="0" max="360" step="1" value="0" style="width:90px; vertical-align:middle;">
+        <label for="rotateYSlider">Rotate Y:</label>
+        <input id="rotateYSlider" type="range" min="0" max="360" step="1" value="0" style="width:90px; vertical-align:middle;">
+        <label for="rotateZSlider">Rotate Z:</label>
+        <input id="rotateZSlider" type="range" min="0" max="360" step="1" value="0" style="width:90px; vertical-align:middle;">
         <input id="clipboardASCII" type="button" value="Copy to Clipboard"> 
         <input id="copyASCII" type="button" value="Download Text File"><br>
         <input id="newASCII" size="12" value="Custom Text" onkeydown="return 13!=event.keyCode"> 
