@@ -8,6 +8,49 @@ const clock = new THREE.Clock()
 let rotateModel = false
 let rotateLight = false
 
+// Detect mobile device and enable light rotation by default
+const isMobileDevice = /(Mobi|Android|iPhone|iPad|iPod|Mobile)/i.test(navigator.userAgent) || window.innerWidth <= 768;
+if (isMobileDevice) {
+    rotateLight = true;
+}
+
+// Update the Rotate Light button to reflect current state
+function updateRotateLightButtonUI() {
+    const btn = document.getElementById('rotateLightButton');
+    if (!btn) return;
+    // Remove existing color classes
+    btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-yellow-600', 'hover:bg-yellow-700', 'bg-gray-600', 'hover:bg-gray-700');
+
+    if (rotateLight) {
+        btn.textContent = 'Pause Light';
+        btn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+    } else {
+        btn.textContent = 'Rotate Light';
+        btn.classList.add('bg-green-600', 'hover:bg-green-700');
+    }
+}
+
+// Initialize button state on load
+updateRotateLightButtonUI();
+
+// Update the Rotate Model button to reflect current state
+function updateRotateModelButtonUI() {
+    const btn = document.getElementById('rotateButton');
+    if (!btn) return;
+    // Remove existing color classes
+    btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-yellow-600', 'hover:bg-yellow-700', 'bg-gray-600', 'hover:bg-gray-700');
+
+    if (rotateModel) {
+        btn.textContent = 'Pause Rotate';
+        btn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+    } else {
+        btn.textContent = 'Rotate Model';
+        btn.classList.add('bg-green-600', 'hover:bg-green-700');
+    }
+}
+
+updateRotateModelButtonUI();
+
 
 //Ugh, don't ask about this stuff
 var userUploaded = false
@@ -63,13 +106,35 @@ function createEffect() {
     effect.domElement.style.backgroundColor = backgroundColor;
 }
 
+// Create and configure orbit controls
+function createOrbitControls() {
+    controls = new THREE.OrbitControls(camera, effect.domElement)
+
+    // Configure orbit controls for smoother interaction
+    controls.enableDamping = true; // Add smooth damping
+    controls.dampingFactor = 0.05; // Lower = smoother
+    controls.enableZoom = true;
+    controls.enablePan = true;
+    controls.enableRotate = true;
+    controls.rotateSpeed = 0.5; // Slower rotation for smoother feel
+    controls.zoomSpeed = 0.8; // Slightly slower zoom
+    controls.panSpeed = 0.8; // Slightly slower pan
+
+    // Configure mouse button controls
+    controls.mouseButtons = {
+        LEFT: THREE.MOUSE.ROTATE,
+        MIDDLE: THREE.MOUSE.PAN,
+        RIGHT: THREE.MOUSE.ROTATE
+    }
+}
+
 createEffect()
 
 document.body.appendChild(effect.domElement)
 
 
 stlLoader.load(
-    './models/test2.stl',
+    './models/model.stl',
     function (geometry) {
 
         myMesh.material = material;
@@ -95,8 +160,7 @@ stlLoader.load(
 
         scene.add(myMesh);
 
-
-        controls = new THREE.OrbitControls(camera, effect.domElement)
+        createOrbitControls()
 
 
         function tick() {
@@ -112,6 +176,9 @@ stlLoader.load(
                 // Manually trigger the input event to update the light's position
                 lightSlider.dispatchEvent(new Event('input'));
             }
+
+            // Update controls for smooth damping
+            controls.update();
 
             render()
             window.requestAnimationFrame(tick)
@@ -160,9 +227,8 @@ stlLoader.load(
 document.getElementById('screenshotButton').addEventListener('click', takeScreenshot);
 
 function takeScreenshot() {
-    var container = document.body; // full page 
-    html2canvas(container).then(function (canvas) {
-
+    // Capture only the ASCII canvas, not the entire page
+    html2canvas(effect.domElement).then(function (canvas) {
         var link = document.createElement("a");
         document.body.appendChild(link);
         link.download = "ASCII.jpg";
@@ -186,7 +252,7 @@ function updateASCII() {
 
     document.body.appendChild(effect.domElement)
 
-    controls = new THREE.OrbitControls(camera, effect.domElement)
+    createOrbitControls()
 
 }
 
@@ -203,7 +269,7 @@ function resetASCII() {
 
     document.body.appendChild(effect.domElement)
 
-    controls = new THREE.OrbitControls(camera, effect.domElement)
+    createOrbitControls()
 }
 
 document.getElementById('lightDark').addEventListener('click', lightDark);
@@ -315,10 +381,12 @@ document.getElementById('scaleSlider').addEventListener('input', function (e) {
 
 document.getElementById('rotateButton').addEventListener('click', function () {
     rotateModel = !rotateModel;
+    updateRotateModelButtonUI();
 });
 
 document.getElementById('rotateLightButton').addEventListener('click', function () {
     rotateLight = !rotateLight;
+    updateRotateLightButtonUI();
 });
 
 document.getElementById('resetButton').addEventListener('click', resetPositions);
@@ -344,7 +412,9 @@ function resetPositions() {
 
     // Stop rotations
     rotateModel = false;
-    rotateLight = false;
+    rotateLight = isMobileDevice;
+    updateRotateLightButtonUI();
+    updateRotateModelButtonUI();
 }
 
 document.getElementById('mobile-menu-button').addEventListener('click', function () {
