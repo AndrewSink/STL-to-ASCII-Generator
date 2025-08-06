@@ -12,17 +12,11 @@
   "author": "Andrew Sink",
   "license": "MIT",
   "devDependencies": {
-    "css-loader": "^7.1.2",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.101.0",
-    "webpack-cli": "^5.1.4",
-    "mini-css-extract-plugin": "^2.7.6",
     "css-minimizer-webpack-plugin": "^7.0.2",
+    "mini-css-extract-plugin": "^2.7.6",
     "terser-webpack-plugin": "^5.3.9"
   },
   "dependencies": {
-    "html2canvas": "^1.4.1",
-    "three": "^0.160.0"
+    "html2canvas": "^1.4.1"
   }
 }
-

@@ -1,22 +1,18 @@
-*
-{
+* {
     margin: 0;
     padding: 0;
 }
-html, 
 
-body
+html,
 
-
-{
+body {
     overflow: hidden;
     background-color: black;
-    text-align: center; 
- 
+    text-align: center;
+
 }
 
-.webgl
-{
+.webgl {
     position: fixed;
     top: 0;
     left: 0;
@@ -24,7 +20,7 @@ body
 }
 
 form {
-    
+
     font-family: 'Courier New';
     /* position: absolute; */
     display: block;
@@ -32,18 +28,16 @@ form {
     /* z-index: 99; */
     left: 0%;
     top: 0%;
-    }
+}
 
 #kofi {
-    text-align: left;  
+    text-align: left;
     position: fixed;
     left: 0;
     bottom: 0;
 }
 
 input[type="button"] {
-  color: black;
-  margin: 6px;
+    color: black;
+    margin: 6px;
 }
-
-

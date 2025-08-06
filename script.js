@@ -1,10 +1,3 @@
-import './style.css'
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js'
-import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
-import html2canvas from 'html2canvas';
-
 //LightMode
 let lightMode = true
 
@@ -13,6 +6,8 @@ const clock = new THREE.Clock()
 
 // Set rotate boolean variable
 let rotateModel = false
+let rotateLight = false
+
 
 //Ugh, don't ask about this stuff
 var userUploaded = false
@@ -30,12 +25,12 @@ const pointLight1 = new THREE.PointLight(0xffffff, 1, 0, 0);
 pointLight1.position.set(100, 100, 400);
 scene.add(pointLight1);
 
-const pointLight2 = new THREE.PointLight(0xffffff, .5);
-pointLight2.position.set(-500, 100, -400);
-scene.add(pointLight2);
+// const pointLight2 = new THREE.PointLight(0xffffff, .1);
+// pointLight2.position.set(0, -50, 0); // Fill light on opposite side
+// scene.add(pointLight2);
 
 // Parameters
-const stlLoader = new STLLoader()
+const stlLoader = new THREE.STLLoader()
 
 //Material
 const material = new THREE.MeshStandardMaterial()
@@ -62,7 +57,7 @@ let backgroundColor = 'black'
 let ASCIIColor = 'white'
 
 function createEffect() {
-    effect = new AsciiEffect(renderer, characters, { invert: true, resolution: effectSize.amount });
+    effect = new THREE.AsciiEffect(renderer, characters, { invert: true, resolution: effectSize.amount });
     effect.setSize(sizes.width, sizes.height);
     effect.domElement.style.color = ASCIIColor;
     effect.domElement.style.backgroundColor = backgroundColor;
@@ -72,7 +67,6 @@ createEffect()
 
 document.body.appendChild(effect.domElement)
 
-document.getElementById("ascii").style.whiteSpace = "prewrap"
 
 stlLoader.load(
     './models/test2.stl',
@@ -80,12 +74,6 @@ stlLoader.load(
 
         myMesh.material = material;
         myMesh.geometry = geometry;
-        myMesh.scale.set(1, 1, 1); // Reset scale on model load
-        // Reset rotation sliders and mesh rotation
-        ['X', 'Y', 'Z'].forEach(axis => {
-            document.getElementById(`rotate${axis}Slider`).value = 0;
-            myMesh.rotation[axis.toLowerCase()] = 0;
-        });
 
         var tempGeometry = new THREE.Mesh(geometry, material)
         myMesh.position.copy = (tempGeometry.position)
@@ -93,9 +81,10 @@ stlLoader.load(
         geometry.computeVertexNormals();
         myMesh.geometry.center()
 
-        myMesh.rotation.x = -90 * Math.PI / 180;
-
         myMesh.geometry.computeBoundingBox();
+
+        resetPositions();
+
         var bbox = myMesh.geometry.boundingBox;
 
         myMesh.position.y = ((bbox.max.z - bbox.min.z) / 5)
@@ -107,13 +96,23 @@ stlLoader.load(
         scene.add(myMesh);
 
 
-        controls = new OrbitControls(camera, effect.domElement)
+        controls = new THREE.OrbitControls(camera, effect.domElement)
 
 
         function tick() {
             if (rotateModel) {
                 myMesh.rotation.z += 0.01; // Adjust speed as needed
             }
+
+            if (rotateLight) {
+                const lightSlider = document.getElementById('lightSlider');
+                let currentAngle = parseFloat(lightSlider.value);
+                currentAngle = (currentAngle + 1) % 360;
+                lightSlider.value = currentAngle;
+                // Manually trigger the input event to update the light's position
+                lightSlider.dispatchEvent(new Event('input'));
+            }
+
             render()
             window.requestAnimationFrame(tick)
         }
@@ -140,16 +139,9 @@ stlLoader.load(
                 tempGeometry = geometry;
                 myMesh.geometry = geometry;
                 myMesh.geometry.center()
-                myMesh.scale.set(1, 1, 1); // Reset scale on file upload
-                // Reset rotation sliders and mesh rotation
-                ['X', 'Y', 'Z'].forEach(axis => {
-                    document.getElementById(`rotate${axis}Slider`).value = 0;
-                    myMesh.rotation[axis.toLowerCase()] = 0;
-                });
-
-                myMesh.rotation.x = -90 * Math.PI / 180;
-
                 myMesh.geometry.computeBoundingBox();
+                resetPositions();
+
                 var bbox = myMesh.geometry.boundingBox;
 
                 // camera.position.x = ((bbox.max.x * 4));
@@ -194,7 +186,7 @@ function updateASCII() {
 
     document.body.appendChild(effect.domElement)
 
-    controls = new OrbitControls(camera, effect.domElement)
+    controls = new THREE.OrbitControls(camera, effect.domElement)
 
 }
 
@@ -211,43 +203,54 @@ function resetASCII() {
 
     document.body.appendChild(effect.domElement)
 
-    controls = new OrbitControls(camera, effect.domElement)
+    controls = new THREE.OrbitControls(camera, effect.domElement)
 }
 
 document.getElementById('lightDark').addEventListener('click', lightDark);
 
 function lightDark() {
-    lightMode = !lightMode
-    if (lightMode === true) {
-        document.getElementById("kofi").style.color = "white";
-        document.body.style.backgroundColor = 'black';
+    lightMode = !lightMode;
+    document.body.classList.toggle('light-mode', !lightMode);
 
-        backgroundColor = 'black'
-        ASCIIColor = 'white'
-
-        effect.domElement.style.color = ASCIIColor;
-        effect.domElement.style.backgroundColor = backgroundColor;
+    if (lightMode) {
+        backgroundColor = 'black';
+        ASCIIColor = 'white';
     } else {
-        document.getElementById("kofi").style.color = "black";
-        document.body.style.backgroundColor = 'white';
-
-        backgroundColor = 'white'
-        ASCIIColor = 'black'
-
-        effect.domElement.style.color = ASCIIColor;
-        effect.domElement.style.backgroundColor = backgroundColor;
+        backgroundColor = 'white';
+        ASCIIColor = 'black';
     }
+
+    effect.domElement.style.color = ASCIIColor;
+    effect.domElement.style.backgroundColor = backgroundColor;
 }
 
 document.getElementById('lightSlider').addEventListener('input', function (e) {
     const angleDeg = parseFloat(e.target.value);
     const angleRad = angleDeg * Math.PI / 180;
     const radius = myMesh.geometry.boundingBox.max.z * 2; // Distance from origin, similar to initial position
-    const y = 100; // Keep height constant
+
+    // Get height from the height slider
+    const heightSlider = document.getElementById('lightHeightSlider');
+    const heightMultiplier = parseFloat(heightSlider.value);
+
+    // Calculate height based on bounding box
+    let height = 85; // Default height
+    if (myMesh.geometry.boundingBox) {
+        const bbox = myMesh.geometry.boundingBox;
+        const bboxHeight = bbox.max.y - bbox.min.y;
+        height = bboxHeight * heightMultiplier;
+    }
+
     // Calculate new position in XZ plane
     const x = Math.cos(angleRad) * radius;
     const z = Math.sin(angleRad) * radius;
-    pointLight1.position.set(x, y, z);
+    pointLight1.position.set(x, height, z);
+    // pointLight2.position.set(-x, -y, -z);
+});
+
+document.getElementById('lightHeightSlider').addEventListener('input', function (e) {
+    // Trigger the light slider to update position with new height
+    document.getElementById('lightSlider').dispatchEvent(new Event('input'));
 });
 
 
@@ -301,10 +304,49 @@ document.getElementById('scaleSlider').addEventListener('input', function (e) {
 ['X', 'Y', 'Z'].forEach(axis => {
     document.getElementById(`rotate${axis}Slider`).addEventListener('input', function (e) {
         const value = parseFloat(e.target.value) * Math.PI / 180;
-        myMesh.rotation[axis.toLowerCase()] = value;
+        if (axis === 'X') {
+            // Account for initial -90° position
+            myMesh.rotation.x = value;
+        } else {
+            myMesh.rotation[axis.toLowerCase()] = value;
+        }
     });
 });
 
 document.getElementById('rotateButton').addEventListener('click', function () {
     rotateModel = !rotateModel;
+});
+
+document.getElementById('rotateLightButton').addEventListener('click', function () {
+    rotateLight = !rotateLight;
+});
+
+document.getElementById('resetButton').addEventListener('click', resetPositions);
+
+function resetPositions() {
+    // Reset model rotation and scale
+    myMesh.scale.set(1, 1, 1);
+    myMesh.rotation.set(-90 * Math.PI / 180, 0, 0);
+
+    // Reset sliders to initial model position
+    document.getElementById('scaleSlider').value = 1;
+    document.getElementById('rotateXSlider').value = -90;
+    document.getElementById('rotateYSlider').value = 0;
+    document.getElementById('rotateZSlider').value = 0;
+    document.getElementById('lightSlider').value = 45;
+    document.getElementById('lightHeightSlider').value = 2;
+
+    // Reset light position
+    if (myMesh.geometry.boundingBox) {
+        document.getElementById('lightSlider').dispatchEvent(new Event('input'));
+    }
+
+
+    // Stop rotations
+    rotateModel = false;
+    rotateLight = false;
+}
+
+document.getElementById('mobile-menu-button').addEventListener('click', function () {
+    document.getElementById('ui-container').classList.toggle('hidden');
 });
