@@ -1,5 +1,5 @@
-//LightMode
-let lightMode = true
+// Theme Mode: true = Dark (white on black), false = Light (black on white)
+let isDarkMode = true
 
 //Create a clock for rotation
 const clock = new THREE.Clock()
@@ -275,10 +275,10 @@ function resetASCII() {
 document.getElementById('lightDark').addEventListener('click', lightDark);
 
 function lightDark() {
-    lightMode = !lightMode;
-    document.body.classList.toggle('light-mode', !lightMode);
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('light-mode', !isDarkMode);
 
-    if (lightMode) {
+    if (isDarkMode) {
         backgroundColor = 'black';
         ASCIIColor = 'white';
     } else {
