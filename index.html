@@ -5,61 +5,123 @@
     <meta charset="UTF-8">
     <meta id="ascii" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <title>STL To ASCII Generator</title>
-    <script defer="defer" src="bundle.f44395ed74b8180452a2.min.js"></script>
-    <link href="styles.bec3477de08f0feda47d.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body>
-    <form method="post" enctype="multipart/form-data" data-html2canvas-ignore="true">
-      <div id="top">
-        <input id="file-selector" name="files[]" style="display:none" type="file">
-        <input type="button" id="input-button" value="Upload STL" accept=".stl"
-          onclick='document.getElementById("file-selector").click()'>
-        <input id="lightDark" type="button" value="Dark/Light Mode">
-        <input id="rotateButton" type="button" value="Rotate">
-        <label for="scaleSlider">Scale:</label>
-        <input id="scaleSlider" type="range" min="0.1" max="3" step="0.01" value="1"
-          style="width:120px; vertical-align:middle;">
-        <label for="lightSlider">Light Angle:</label>
-        <input id="lightSlider" type="range" min="0" max="360" step="1" value="45"
-          style="width:120px; vertical-align:middle;">
-        <label for="rotateXSlider">Rotate X:</label>
-        <input id="rotateXSlider" type="range" min="0" max="360" step="1" value="0"
-          style="width:90px; vertical-align:middle;">
-        <label for="rotateYSlider">Rotate Y:</label>
-        <input id="rotateYSlider" type="range" min="0" max="360" step="1" value="0"
-          style="width:90px; vertical-align:middle;">
-        <label for="rotateZSlider">Rotate Z:</label>
-        <input id="rotateZSlider" type="range" min="0" max="360" step="1" value="0"
-          style="width:90px; vertical-align:middle;">
-        <input id="clipboardASCII" type="button" value="Copy to Clipboard">
-        <input id="copyASCII" type="button" value="Download Text File"><br>
-        <input id="newASCII" size="12" value="Custom Text" onkeydown="return 13!=event.keyCode">
-        <input id="updateASCII" type="button" value="Update ASCII">
-        <input id="resetASCII" type="button" value="Reset ASCII">
-        <input id="screenshotButton" type="button" value="Screenshot">
-        <script>
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && (
-            document.getElementById("screenshotButton").style.display = "none",
-            document.getElementById("input-button").style.display = "none",
-            document.getElementById("copyASCII").style.display = "none",
-            document.getElementById("clipboardASCII").style.display = "none"
-          )
-        </script>
+  <body class="bg-gray-900 text-gray-300 font-sans overflow-hidden">
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-button" class="md:hidden absolute top-4 left-4 z-20 bg-gray-800 p-2 rounded-md ">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+
+    <div id="ui-container" class="absolute top-0 left-0 p-2 md:p-4 space-y-2 md:space-y-4 hidden md:block">
+      <div id="controls" class="space-y-3 md:space-y-6 p-3 md:p-6 bg-gray-800 bg-opacity-80 rounded-lg shadow-lg">
+        <h1 class="text-xl md:text-2xl font-bold text-white mb-2 md:mb-4 text-center">STL to ASCII Generator</h1>
+
+        <!-- File and View Controls -->
+        <div class="control-group">
+          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">File & View</h2>
+          <div class="flex space-x-1 md:space-x-2">
+            <input id="file-selector" name="files[]" style="display:none" type="file">
+            <button id="input-button" type="button"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base"
+              onclick='document.getElementById("file-selector").click()'>Upload STL</button>
+            <button id="lightDark" type="button"
+              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Dark/Light
+              Mode</button>
+          </div>
+        </div>
+
+        <!-- Model Controls -->
+        <div class="control-group">
+          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">Model Controls</h2>
+          <div class="flex space-x-1 md:space-x-2 mb-2 md:mb-4">
+            <button id="rotateButton" type="button"
+              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Rotate
+              Model</button>
+            <button id="rotateLightButton" type="button"
+              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Rotate
+              Light</button>
+            <button id="resetButton" type="button"
+              class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Reset</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
+            <div class="flex flex-col">
+              <label for="lightSlider" class="mb-1 text-sm md:text-base">Light Rotation:</label>
+              <input id="lightSlider" type="range" min="0" max="360" step="1" value="45" class="w-full">
+            </div>
+            <div class="flex flex-col">
+              <label for="lightHeightSlider" class="mb-1 text-sm md:text-base">Light Height:</label>
+              <input id="lightHeightSlider" type="range" min="-2" max="2" step="0.1" value="2" class="w-full">
+            </div>
+            <div class="flex flex-col">
+              <label for="rotateXSlider" class="mb-1 text-sm md:text-base">Rotate X:</label>
+              <input id="rotateXSlider" type="range" min="-180" max="180" step="1" value="-90" class="w-full">
+            </div>
+            <div class="flex flex-col">
+              <label for="rotateYSlider" class="mb-1 text-sm md:text-base">Rotate Y:</label>
+              <input id="rotateYSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
+            </div>
+            <div class="flex flex-col">
+              <label for="rotateZSlider" class="mb-1 text-sm md:text-base">Rotate Z:</label>
+              <input id="rotateZSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
+            </div>
+            <div class="flex flex-col">
+              <label for="scaleSlider" class="mb-1 text-sm md:text-base">Scale:</label>
+              <input id="scaleSlider" type="range" min="0.1" max="3" step="0.01" value="1" class="w-full">
+            </div>
+          </div>
+        </div>
+
+        <!-- ASCII Controls -->
+        <div class="control-group">
+          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">ASCII Controls</h2>
+          <div class="flex items-center space-x-1 md:space-x-2">
+            <input id="newASCII" size="12" value="Custom Text"
+              class="bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm md:text-base">
+            <button id="updateASCII" type="button"
+              class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 md:py-2 px-2 md:px-3 rounded transition duration-300 text-sm md:text-base">Update</button>
+            <button id="resetASCII" type="button"
+              class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 md:py-2 px-2 md:px-3 rounded transition duration-300 text-sm md:text-base">Reset</button>
+          </div>
+        </div>
+
+        <!-- Export Controls -->
+        <div class="control-group">
+          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">Export</h2>
+          <div class="flex space-x-1 md:space-x-2 flex-wrap">
+            <button id="clipboardASCII" type="button"
+              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 mt-1 md:mt-2 text-sm md:text-base">Copy
+              to Clipboard</button>
+            <button id="copyASCII" type="button"
+              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 mt-1 md:mt-2 text-sm md:text-base">Download
+              Text</button>
+            <button id="screenshotButton" type="button"
+              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 mt-1 md:mt-2 text-sm md:text-base">Screenshot</button>
+          </div>
+        </div>
       </div>
-      <div id="kofi">
-        <br><br><br>
-        <p>STL to ASCII Generator</p>
-        <p style="font-family:'Courier New'">Andrew Sink - 2022</p>
-        <p style="font-size:13px;font-family:'Courier New'">Full Code Available on <a
-            href="https://github.com/AndrewSink/STL-to-ASCII-Generator">Github</a></p>
-        <script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
-        <script>
-          kofiwidget2.init("Want to buy me a coffee?", "#29abe0", "A0A35L8LW"),
-            kofiwidget2.draw()
-        </script>
-      </div>
-    </form>
+    </div>
+    <div id="kofi" class="absolute bottom-4 left-4">
+      <p class="text-xs font-mono">Andrew Sink - 2025</p>
+      <p class="text-xs font-mono">Full Code Available on <a href="https://github.com/AndrewSink/STL-to-ASCII-Generator"
+          class="text-blue-400 hover:underline">Github</a></p>
+      <script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+      <script>
+        kofiwidget2.init("Want to buy me a coffee?", "#29abe0", "A0A35L8LW"),
+          kofiwidget2.draw()
+      </script>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/effects/AsciiEffect.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
   </body>
 
 </html>
