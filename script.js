@@ -134,7 +134,7 @@ document.body.appendChild(effect.domElement)
 
 
 stlLoader.load(
-    './models/model.stl',
+    './models/skull_mesh.stl',
     function (geometry) {
 
         myMesh.material = material;
