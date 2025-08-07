@@ -13,6 +13,7 @@ Future Development:
 - [x] Copy ASCII image to clipboard (thanks [donno2048](https://github.com/donno2048)!)
 - [X] Change lighting orientation (thanks [zumatt](https://github.com/zumatt)!)
 - [X] Add screenshot on mobile
-- [ ] Text Export
 
 Find this project useful? You can buy me a [coffee on Ko-Fi](https://ko-fi.com/andrewsink)!
+
+![ASCII](https://github.com/user-attachments/assets/009f804a-2852-414b-afe6-7420d161bf43)
