@@ -2,8 +2,7 @@
 
 Try it out: [STL to ASCII Generator](https://andrewsink.github.io/STL-to-ASCII-Generator/)
 
-<img width="1217" height="723" alt="image" src="https://github.com/user-attachments/assets/dfa8f41a-56d3-4475-854e-d4c34506ba46" />
-
+<img width="1310" height="736" alt="preview" src="https://github.com/user-attachments/assets/c530ab46-69a7-4bb9-98f1-0ab074ea4678" />
 
 The STL to ASCII Generator is a lightweight and easy way to convert an STL file (3D model) into an ASCII image. Just upload your STL file and experiment with the settings to create your ASCII masterpiece! 
 
