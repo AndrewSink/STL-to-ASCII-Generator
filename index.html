@@ -39,9 +39,6 @@
         <div class="control-group">
           <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">Model Controls</h2>
           <div class="flex space-x-1 md:space-x-2 mb-2 md:mb-4">
-            <button id="rotateButton" type="button"
-              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Rotate
-              Model</button>
             <button id="rotateLightButton" type="button"
               class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Rotate
               Light</button>
@@ -59,15 +56,24 @@
             </div>
             <div class="flex flex-col">
               <label for="rotateXSlider" class="mb-1 text-sm md:text-base">Rotate X:</label>
-              <input id="rotateXSlider" type="range" min="-180" max="180" step="1" value="-90" class="w-full">
+              <div class="flex items-center space-x-1">
+                <input id="rotateXSlider" type="range" min="-180" max="180" step="1" value="-90" class="w-full">
+                <button id="animateXButton" type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded transition duration-300 text-xs">Animate</button>
+              </div>
             </div>
             <div class="flex flex-col">
               <label for="rotateYSlider" class="mb-1 text-sm md:text-base">Rotate Y:</label>
-              <input id="rotateYSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
+              <div class="flex items-center space-x-1">
+                <input id="rotateYSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
+                <button id="animateYButton" type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded transition duration-300 text-xs">Animate</button>
+              </div>
             </div>
             <div class="flex flex-col">
               <label for="rotateZSlider" class="mb-1 text-sm md:text-base">Rotate Z:</label>
-              <input id="rotateZSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
+              <div class="flex items-center space-x-1">
+                <input id="rotateZSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
+                <button id="animateZButton" type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded transition duration-300 text-xs">Animate</button>
+              </div>
             </div>
             <div class="flex flex-col">
               <label for="scaleSlider" class="mb-1 text-sm md:text-base">Scale:</label>

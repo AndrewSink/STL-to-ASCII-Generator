@@ -5,7 +5,11 @@ let isDarkMode = true
 const clock = new THREE.Clock()
 
 // Set rotate boolean variable
-let rotateModel = false
+let rotateModel = {
+    x: false,
+    y: false,
+    z: false
+}
 let rotateLight = false
 
 // Detect mobile device and enable light rotation by default
@@ -35,17 +39,30 @@ updateRotateLightButtonUI();
 
 // Update the Rotate Model button to reflect current state
 function updateRotateModelButtonUI() {
-    const btn = document.getElementById('rotateButton');
-    if (!btn) return;
-    // Remove existing color classes
-    btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-yellow-600', 'hover:bg-yellow-700', 'bg-gray-600', 'hover:bg-gray-700');
-
-    if (rotateModel) {
-        btn.textContent = 'Pause Rotate';
-        btn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+    const btnX = document.getElementById('animateXButton');
+    const btnY = document.getElementById('animateYButton');
+    const btnZ = document.getElementById('animateZButton');
+    
+    if (rotateModel.x) {
+        btnX.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
     } else {
-        btn.textContent = 'Rotate Model';
-        btn.classList.add('bg-green-600', 'hover:bg-green-700');
+        btnX.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+        btnX.classList.add('bg-gray-600', 'hover:bg-gray-700');
+    }
+
+
+    if (rotateModel.y) {
+        btnY.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+    } else {
+        btnY.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+        btnY.classList.add('bg-gray-600', 'hover:bg-gray-700');
+    }
+
+    if (rotateModel.z) {
+        btnZ.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+    } else {
+        btnZ.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+        btnZ.classList.add('bg-gray-600', 'hover:bg-gray-700');
     }
 }
 
@@ -164,8 +181,16 @@ stlLoader.load(
 
 
         function tick() {
-            if (rotateModel) {
-                myMesh.rotation.z += 0.01; // Adjust speed as needed
+            if (rotateModel.x) {
+                myMesh.rotation.x += 0.01;
+            }
+
+            if (rotateModel.y) {
+                myMesh.rotation.y += 0.01;
+            }
+
+            if (rotateModel.z) {
+                myMesh.rotation.z += 0.01;
             }
 
             if (rotateLight) {
@@ -379,8 +404,18 @@ document.getElementById('scaleSlider').addEventListener('input', function (e) {
     });
 });
 
-document.getElementById('rotateButton').addEventListener('click', function () {
-    rotateModel = !rotateModel;
+document.getElementById('animateXButton').addEventListener('click', function () {
+    rotateModel.x = !rotateModel.x;
+    updateRotateModelButtonUI();
+});
+
+document.getElementById('animateYButton').addEventListener('click', function () {
+    rotateModel.y = !rotateModel.y;
+    updateRotateModelButtonUI();
+});
+
+document.getElementById('animateZButton').addEventListener('click', function () {
+    rotateModel.z = !rotateModel.z;
     updateRotateModelButtonUI();
 });
 
@@ -411,7 +446,11 @@ function resetPositions() {
 
 
     // Stop rotations
-    rotateModel = false;
+    rotateModel = { 
+        x: false,
+        y: false, 
+        z: false
+    };
     rotateLight = isMobileDevice;
     updateRotateLightButtonUI();
     updateRotateModelButtonUI();
