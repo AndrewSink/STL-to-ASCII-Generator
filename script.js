@@ -29,7 +29,7 @@ function updateRotateLightButtonUI() {
         btn.textContent = 'Pause Light';
         btn.classList.add('bg-amber-500', 'hover:bg-amber-400');
     } else {
-        btn.textContent = 'Rotate Light';
+        btn.textContent = 'Auto-Rotate Light';
         btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
     }
 }
