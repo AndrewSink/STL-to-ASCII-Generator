@@ -123,6 +123,22 @@ function createEffect() {
     effect.domElement.style.backgroundColor = backgroundColor;
 }
 
+function updateViewOffset() {
+    const sidebar = document.getElementById('ui-container');
+    const sidebarWidth = (sidebar && getComputedStyle(sidebar).display !== 'none') ? sidebar.offsetWidth : 0;
+    if (sidebarWidth > 0) {
+        camera.setViewOffset(
+            window.innerWidth, window.innerHeight,
+            -Math.round(sidebarWidth / 2), 0,
+            window.innerWidth, window.innerHeight
+        );
+    } else {
+        camera.clearViewOffset();
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    }
+}
+
 // Create and configure orbit controls
 function createOrbitControls() {
     controls = new THREE.OrbitControls(camera, effect.domElement)
@@ -178,7 +194,7 @@ stlLoader.load(
         scene.add(myMesh);
 
         createOrbitControls()
-
+        updateViewOffset()
 
         function tick() {
             if (rotateModel.x) {
@@ -354,9 +370,7 @@ document.getElementById('lightHeightSlider').addEventListener('input', function 
 window.addEventListener('resize', onWindowResize);
 
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
+    updateViewOffset();
     renderer.setSize(window.innerWidth, window.innerHeight);
     effect.setSize(window.innerWidth, window.innerHeight);
 }
