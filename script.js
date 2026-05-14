@@ -23,14 +23,14 @@ function updateRotateLightButtonUI() {
     const btn = document.getElementById('rotateLightButton');
     if (!btn) return;
     // Remove existing color classes
-    btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'bg-yellow-600', 'hover:bg-yellow-700', 'bg-gray-600', 'hover:bg-gray-700');
+    btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'bg-amber-500', 'hover:bg-amber-400', 'bg-slate-700', 'hover:bg-slate-600');
 
     if (rotateLight) {
         btn.textContent = 'Pause Light';
-        btn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+        btn.classList.add('bg-amber-500', 'hover:bg-amber-400');
     } else {
         btn.textContent = 'Rotate Light';
-        btn.classList.add('bg-green-600', 'hover:bg-green-700');
+        btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
     }
 }
 
@@ -44,25 +44,25 @@ function updateRotateModelButtonUI() {
     const btnZ = document.getElementById('animateZButton');
     
     if (rotateModel.x) {
-        btnX.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+        btnX.classList.add('bg-amber-500', 'hover:bg-amber-400');
     } else {
-        btnX.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
-        btnX.classList.add('bg-gray-600', 'hover:bg-gray-700');
+        btnX.classList.remove('bg-amber-500', 'hover:bg-amber-400');
+        btnX.classList.add('bg-slate-700', 'hover:bg-slate-600');
     }
 
 
     if (rotateModel.y) {
-        btnY.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+        btnY.classList.add('bg-amber-500', 'hover:bg-amber-400');
     } else {
-        btnY.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
-        btnY.classList.add('bg-gray-600', 'hover:bg-gray-700');
+        btnY.classList.remove('bg-amber-500', 'hover:bg-amber-400');
+        btnY.classList.add('bg-slate-700', 'hover:bg-slate-600');
     }
 
     if (rotateModel.z) {
-        btnZ.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+        btnZ.classList.add('bg-amber-500', 'hover:bg-amber-400');
     } else {
-        btnZ.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
-        btnZ.classList.add('bg-gray-600', 'hover:bg-gray-700');
+        btnZ.classList.remove('bg-amber-500', 'hover:bg-amber-400');
+        btnZ.classList.add('bg-slate-700', 'hover:bg-slate-600');
     }
 }
 

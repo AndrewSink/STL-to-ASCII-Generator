@@ -8,9 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body class="bg-gray-900 text-gray-300 font-sans overflow-hidden">
+  <body class="bg-slate-950 text-slate-300 font-sans overflow-hidden">
     <!-- Mobile Menu Button -->
-    <button id="mobile-menu-button" class="md:hidden absolute top-4 left-4 z-20 bg-gray-800 p-2 rounded-md ">
+    <button id="mobile-menu-button" class="md:hidden absolute top-4 left-4 z-20 bg-slate-800 p-2 rounded-md">
       <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
@@ -18,32 +18,32 @@
     </button>
 
     <div id="ui-container" class="absolute top-0 left-0 p-2 md:p-3 hidden md:block">
-      <div id="controls" class="space-y-2 md:space-y-3 p-3 md:p-4 bg-gray-800 bg-opacity-80 rounded-lg shadow-lg">
+      <div id="controls" class="space-y-2 md:space-y-3 p-3 md:p-4 bg-slate-900 border border-slate-700/60 rounded-xl shadow-2xl">
         <h1 class="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2 text-center">STL to ASCII Generator</h1>
 
         <!-- File and View Controls -->
         <div class="control-group">
-          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">File & View</h2>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 pb-1 border-b border-slate-700">File & View</h2>
           <div class="flex space-x-1 md:space-x-2">
             <input id="file-selector" name="files[]" style="display:none" type="file" accept=".stl">
             <button id="input-button" type="button"
-              class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base"
+              class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 text-sm md:text-base"
               onclick='document.getElementById("file-selector").click()'>Upload STL</button>
             <button id="lightDark" type="button"
-              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Dark/Light
+              class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 text-sm md:text-base">Dark/Light
               Mode</button>
           </div>
         </div>
 
         <!-- Model Controls -->
         <div class="control-group">
-          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">Model Controls</h2>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 pb-1 border-b border-slate-700">Model Controls</h2>
           <div class="flex space-x-1 md:space-x-2 mb-1 md:mb-2">
             <button id="rotateLightButton" type="button"
-              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Rotate
+              class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 text-sm md:text-base">Rotate
               Light</button>
             <button id="resetButton" type="button"
-              class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 text-sm md:text-base">Reset</button>
+              class="bg-slate-700 hover:bg-slate-600 text-red-400 font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 text-sm md:text-base">Reset</button>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2">
             <div class="flex flex-col">
@@ -58,21 +58,21 @@
               <label for="rotateXSlider" class="mb-1 text-sm md:text-base">Rotate X:</label>
               <div class="flex items-center space-x-1">
                 <input id="rotateXSlider" type="range" min="-180" max="180" step="1" value="-90" class="w-full">
-                <button id="animateXButton" type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded transition duration-300 text-xs">Animate</button>
+                <button id="animateXButton" type="button" class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 px-2 rounded-md transition duration-200 text-xs">Animate</button>
               </div>
             </div>
             <div class="flex flex-col">
               <label for="rotateYSlider" class="mb-1 text-sm md:text-base">Rotate Y:</label>
               <div class="flex items-center space-x-1">
                 <input id="rotateYSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
-                <button id="animateYButton" type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded transition duration-300 text-xs">Animate</button>
+                <button id="animateYButton" type="button" class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 px-2 rounded-md transition duration-200 text-xs">Animate</button>
               </div>
             </div>
             <div class="flex flex-col">
               <label for="rotateZSlider" class="mb-1 text-sm md:text-base">Rotate Z:</label>
               <div class="flex items-center space-x-1">
                 <input id="rotateZSlider" type="range" min="0" max="360" step="1" value="0" class="w-full">
-                <button id="animateZButton" type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded transition duration-300 text-xs">Animate</button>
+                <button id="animateZButton" type="button" class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 px-2 rounded-md transition duration-200 text-xs">Animate</button>
               </div>
             </div>
             <div class="flex flex-col">
@@ -84,37 +84,37 @@
 
         <!-- ASCII Controls -->
         <div class="control-group">
-          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">ASCII Controls</h2>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 pb-1 border-b border-slate-700">ASCII Controls</h2>
           <div class="flex items-center space-x-1 md:space-x-2">
             <input id="newASCII" size="12" value="Custom Text"
-              class="bg-gray-700 border border-gray-600 rounded px-2 py-1 text-sm md:text-base">
+              class="bg-slate-800 border border-slate-600 rounded-md px-2 py-1 text-sm md:text-base text-slate-200">
             <button id="updateASCII" type="button"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 md:py-2 px-2 md:px-3 rounded transition duration-300 text-sm md:text-base">Update</button>
+              class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 md:py-2 px-2 md:px-3 rounded-md transition duration-200 text-sm md:text-base">Update</button>
             <button id="resetASCII" type="button"
-              class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 md:py-2 px-2 md:px-3 rounded transition duration-300 text-sm md:text-base">Reset</button>
+              class="bg-slate-700 hover:bg-slate-600 text-red-400 font-medium py-1 md:py-2 px-2 md:px-3 rounded-md transition duration-200 text-sm md:text-base">Reset</button>
           </div>
         </div>
 
         <!-- Export Controls -->
         <div class="control-group">
-          <h2 class="text-base md:text-lg font-bold mb-1 md:mb-2 border-b border-gray-600 pb-1">Export</h2>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 pb-1 border-b border-slate-700">Export</h2>
           <div class="flex space-x-1 md:space-x-2 flex-wrap">
             <button id="clipboardASCII" type="button"
-              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 mt-1 md:mt-2 text-sm md:text-base">Copy
+              class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 mt-1 md:mt-2 text-sm md:text-base">Copy
               to Clipboard</button>
             <button id="copyASCII" type="button"
-              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 mt-1 md:mt-2 text-sm md:text-base">Download
+              class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 mt-1 md:mt-2 text-sm md:text-base">Download
               Text</button>
             <button id="screenshotButton" type="button"
-              class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 mt-1 md:mt-2 text-sm md:text-base">Screenshot</button>
+              class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 mt-1 md:mt-2 text-sm md:text-base">Screenshot</button>
           </div>
         </div>
 
         <!-- Footer -->
-        <div class="border-t border-gray-600 pt-2">
+        <div class="border-t border-slate-700 pt-2">
           <div class="flex items-center space-x-2">
-            <p class="text-xs font-mono text-gray-400">Andrew Sink - 2026</p>
-            <a href="https://github.com/AndrewSink/STL-to-ASCII-Generator" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-200">
+            <p class="text-xs font-mono text-slate-500">Andrew Sink - 2026</p>
+            <a href="https://github.com/AndrewSink/STL-to-ASCII-Generator" target="_blank" class="text-slate-500 hover:text-white transition-colors duration-200">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
               </svg>
