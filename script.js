@@ -189,9 +189,9 @@ stlLoader.load(
 
         myMesh.position.y = ((bbox.max.z - bbox.min.z) / 5)
 
-        camera.position.x = ((bbox.max.x * 2.5));
+        camera.position.x = ((bbox.max.x * 4));
         camera.position.y = ((bbox.max.y));
-        camera.position.z = ((bbox.max.z * 2));
+        camera.position.z = ((bbox.max.z * 3));
 
         scene.add(myMesh);
 
