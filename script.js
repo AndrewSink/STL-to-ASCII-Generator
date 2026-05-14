@@ -306,9 +306,11 @@ function lightDark() {
     if (isDarkMode) {
         backgroundColor = 'black';
         ASCIIColor = 'white';
+        scene.background = new THREE.Color(0, 0, 0);
     } else {
         backgroundColor = 'white';
         ASCIIColor = 'black';
+        scene.background = new THREE.Color(1, 1, 1);
     }
 
     document.body.removeChild(effect.domElement);
