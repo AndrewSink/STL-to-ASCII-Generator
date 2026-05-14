@@ -117,7 +117,7 @@ let backgroundColor = 'black'
 let ASCIIColor = 'white'
 
 function createEffect() {
-    effect = new THREE.AsciiEffect(renderer, characters, { invert: true, resolution: effectSize.amount });
+    effect = new THREE.AsciiEffect(renderer, characters, { invert: isDarkMode, resolution: effectSize.amount });
     effect.setSize(sizes.width, sizes.height);
     effect.domElement.style.color = ASCIIColor;
     effect.domElement.style.backgroundColor = backgroundColor;
@@ -311,8 +311,11 @@ function lightDark() {
         ASCIIColor = 'black';
     }
 
-    effect.domElement.style.color = ASCIIColor;
-    effect.domElement.style.backgroundColor = backgroundColor;
+    document.body.removeChild(effect.domElement);
+    createEffect();
+    onWindowResize();
+    document.body.appendChild(effect.domElement);
+    createOrbitControls();
 }
 
 document.getElementById('lightSlider').addEventListener('input', function (e) {
