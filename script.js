@@ -141,7 +141,9 @@ function updateViewOffset() {
 
 // Create and configure orbit controls
 function createOrbitControls() {
-    controls = new THREE.OrbitControls(camera, effect.domElement)
+    const prevTarget = controls ? controls.target.clone() : new THREE.Vector3();
+    controls = new THREE.OrbitControls(camera, effect.domElement);
+    controls.target.copy(prevTarget);
 
     // Configure orbit controls for smoother interaction
     controls.enableDamping = true; // Add smooth damping
@@ -331,7 +333,7 @@ function lightDark() {
 
     document.body.removeChild(effect.domElement);
     createEffect();
-    onWindowResize();
+    effect.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(effect.domElement);
     createOrbitControls();
 }
