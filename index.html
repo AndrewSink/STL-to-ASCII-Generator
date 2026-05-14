@@ -17,7 +17,7 @@
       </svg>
     </button>
 
-    <div id="ui-container" class="absolute top-0 left-0 p-2 md:p-4 space-y-2 md:space-y-4 hidden md:block">
+    <div id="ui-container" class="absolute top-0 left-0 p-2 md:p-4 max-h-screen overflow-y-auto hidden md:block">
       <div id="controls" class="space-y-3 md:space-y-6 p-3 md:p-6 bg-gray-800 bg-opacity-80 rounded-lg shadow-lg">
         <h1 class="text-xl md:text-2xl font-bold text-white mb-2 md:mb-4 text-center">STL to ASCII Generator</h1>
 
@@ -109,17 +109,19 @@
               class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded transition duration-300 mt-1 md:mt-2 text-sm md:text-base">Screenshot</button>
           </div>
         </div>
+
+        <!-- Footer -->
+        <div id="kofi" class="border-t border-gray-600 pt-2 md:pt-3 space-y-1">
+          <p class="text-xs font-mono text-gray-400">Andrew Sink - 2025</p>
+          <p class="text-xs font-mono text-gray-400">Full Code: <a href="https://github.com/AndrewSink/STL-to-ASCII-Generator"
+              class="text-blue-400 hover:underline">Github</a></p>
+          <script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+          <script>
+            kofiwidget2.init("Want to buy me a coffee?", "#29abe0", "A0A35L8LW"),
+              kofiwidget2.draw()
+          </script>
+        </div>
       </div>
-    </div>
-    <div id="kofi" class="absolute bottom-4 left-4">
-      <p class="text-xs font-mono">Andrew Sink - 2025</p>
-      <p class="text-xs font-mono">Full Code: <a href="https://github.com/AndrewSink/STL-to-ASCII-Generator"
-          class="text-blue-400 hover:underline">Github</a></p>
-      <script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
-      <script>
-        kofiwidget2.init("Want to buy me a coffee?", "#29abe0", "A0A35L8LW"),
-          kofiwidget2.draw()
-      </script>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
