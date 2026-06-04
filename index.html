@@ -26,9 +26,13 @@
           <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 pb-1 border-b border-slate-700">File & View</h2>
           <div class="flex items-center space-x-1 md:space-x-2">
             <input id="file-selector" name="files[]" style="display:none" type="file" accept=".stl">
+            <input id="glb-file-selector" name="glb-files[]" style="display:none" type="file" accept=".glb">
             <button id="input-button" type="button"
               class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 text-sm md:text-base"
               onclick='document.getElementById("file-selector").click()'>Upload STL</button>
+            <button id="glb-input-button" type="button"
+              class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 text-sm md:text-base"
+              onclick='document.getElementById("glb-file-selector").click()'>Upload GLB</button>
             <button id="lightDark" type="button"
               class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md transition duration-200 text-sm md:text-base">Dark/Light
               Mode</button>
@@ -126,6 +130,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/BufferGeometryUtils.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/effects/AsciiEffect.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>

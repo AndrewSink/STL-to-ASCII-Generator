@@ -72,6 +72,16 @@ updateRotateModelButtonUI();
 //Ugh, don't ask about this stuff
 var userUploaded = false
 let controls
+let defaultRotation = {
+    x: -90 * Math.PI / 180,
+    y: 0,
+    z: 0
+}
+let defaultRotationDegrees = {
+    x: -90,
+    y: 0,
+    z: 0
+}
 
 // Creates empty mesh container
 const myMesh = new THREE.Mesh();
@@ -91,6 +101,7 @@ scene.add(pointLight1);
 
 // Parameters
 const stlLoader = new THREE.STLLoader()
+const gltfLoader = new THREE.GLTFLoader()
 
 //Material
 const material = new THREE.MeshStandardMaterial()
@@ -167,33 +178,174 @@ createEffect()
 
 document.body.appendChild(effect.domElement)
 
+// Reuse the same mesh setup for STL and GLB uploads.
+function applyGeometryToMesh(geometry, options = {}) {
+    const {
+        yOffsetDivisor = 6,
+        updateCamera = false,
+        rotation = {
+            x: -90 * Math.PI / 180,
+            y: 0,
+            z: 0
+        },
+        rotationDegrees = {
+            x: -90,
+            y: 0,
+            z: 0
+        }
+    } = options;
+
+    // Keep the reset rotation and slider defaults aligned with the current file type.
+    defaultRotation = { ...rotation };
+    defaultRotationDegrees = { ...rotationDegrees };
+
+    myMesh.material = material;
+    myMesh.geometry = geometry;
+
+    geometry.computeVertexNormals();
+    myMesh.geometry.center();
+    myMesh.geometry.computeBoundingBox();
+
+    resetPositions();
+
+    const bbox = myMesh.geometry.boundingBox;
+    myMesh.position.y = ((bbox.max.z - bbox.min.z) / yOffsetDivisor);
+
+    if (updateCamera) {
+        camera.position.x = (bbox.max.x * 4);
+        camera.position.y = (bbox.max.y);
+        camera.position.z = (bbox.max.z * 3);
+    }
+
+    scene.add(myMesh);
+}
+
+// Flatten all meshes in a GLB into one geometry so the existing ASCII pipeline works.
+function getMergedGeometryFromGLB(root) {
+    const geometries = [];
+
+    root.updateMatrixWorld(true);
+
+    root.traverse(function (child) {
+        if (!child.isMesh || !child.geometry) {
+            return;
+        }
+
+        const geometry = child.geometry.clone();
+        geometry.applyMatrix4(child.matrixWorld);
+
+        if (geometry.index) {
+            geometries.push(geometry.toNonIndexed());
+        } else {
+            geometries.push(geometry);
+        }
+    });
+
+    if (!geometries.length) {
+        return null;
+    }
+
+    return THREE.BufferGeometryUtils.mergeBufferGeometries(geometries, false);
+}
+
+function loadSTLFromArrayBuffer(arrayBuffer) {
+    const geometry = stlLoader.parse(arrayBuffer);
+    applyGeometryToMesh(geometry, {
+        rotation: {
+            x: -90 * Math.PI / 180,
+            y: 0,
+            z: 0
+        },
+        rotationDegrees: {
+            x: -90,
+            y: 0,
+            z: 0
+        }
+    });
+}
+
+function loadGLBFromArrayBuffer(arrayBuffer) {
+    gltfLoader.parse(arrayBuffer, '', function (gltf) {
+        const geometry = getMergedGeometryFromGLB(gltf.scene);
+
+        if (!geometry) {
+            window.alert('No mesh geometry was found in this GLB file.');
+            return;
+        }
+
+        applyGeometryToMesh(geometry, {
+            rotation: {
+                x: 0,
+                y: 0,
+                z: 0
+            },
+            rotationDegrees: {
+                x: 0,
+                y: 0,
+                z: 0
+            }
+        });
+    }, function (error) {
+        console.error(error);
+        window.alert('Unable to load this GLB file.');
+    });
+}
+
+function openSTLFile(evt) {
+    const fileObject = evt.target.files[0];
+    if (!fileObject) {
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(fileObject);
+    reader.onload = function () {
+        if (userUploaded == false) {
+            userUploaded = true;
+        }
+
+        loadSTLFromArrayBuffer(this.result);
+    };
+
+    evt.target.value = '';
+}
+
+function openGLBFile(evt) {
+    const fileObject = evt.target.files[0];
+    if (!fileObject) {
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(fileObject);
+    reader.onload = function () {
+        if (userUploaded == false) {
+            userUploaded = true;
+        }
+
+        loadGLBFromArrayBuffer(this.result);
+    };
+
+    evt.target.value = '';
+}
 
 stlLoader.load(
     './models/model.stl',
     function (geometry) {
-
-        myMesh.material = material;
-        myMesh.geometry = geometry;
-
-        var tempGeometry = new THREE.Mesh(geometry, material)
-        myMesh.position.copy = (tempGeometry.position)
-
-        geometry.computeVertexNormals();
-        myMesh.geometry.center()
-
-        myMesh.geometry.computeBoundingBox();
-
-        resetPositions();
-
-        var bbox = myMesh.geometry.boundingBox;
-
-        myMesh.position.y = ((bbox.max.z - bbox.min.z) / 5)
-
-        camera.position.x = ((bbox.max.x * 4));
-        camera.position.y = ((bbox.max.y));
-        camera.position.z = ((bbox.max.z * 3));
-
-        scene.add(myMesh);
+        applyGeometryToMesh(geometry, {
+            yOffsetDivisor: 5,
+            updateCamera: true,
+            rotation: {
+                x: -90 * Math.PI / 180,
+                y: 0,
+                z: 0
+            },
+            rotationDegrees: {
+                x: -90,
+                y: 0,
+                z: 0
+            }
+        });
 
         createOrbitControls()
         updateViewOffset()
@@ -233,36 +385,8 @@ stlLoader.load(
 
         tick()
 
-        document.getElementById('file-selector').addEventListener('change', openFile, false);
-
-
-        function openFile(evt) {
-            const fileObject = evt.target.files[0];
-
-            const reader = new FileReader();
-            reader.readAsArrayBuffer(fileObject);
-            reader.onload = function () {
-                if (userUploaded == false) {
-                    userUploaded = true;
-                }
-                const geometry = stlLoader.parse(this.result);
-                tempGeometry = geometry;
-                myMesh.geometry = geometry;
-                myMesh.geometry.center()
-                myMesh.geometry.computeBoundingBox();
-                resetPositions();
-
-                var bbox = myMesh.geometry.boundingBox;
-
-                // camera.position.x = ((bbox.max.x * 4));
-                // camera.position.y = ((bbox.max.y));
-                // camera.position.z = ((bbox.max.z * 3));
-
-                myMesh.position.y = ((bbox.max.z - bbox.min.z) / 6)
-
-                scene.add(myMesh);
-            };
-        };
+        document.getElementById('file-selector').addEventListener('change', openSTLFile, false);
+        document.getElementById('glb-file-selector').addEventListener('change', openGLBFile, false);
     }
 )
 
@@ -488,13 +612,13 @@ document.getElementById('resetButton').addEventListener('click', resetPositions)
 function resetPositions() {
     // Reset model rotation and scale
     myMesh.scale.set(1, 1, 1);
-    myMesh.rotation.set(-90 * Math.PI / 180, 0, 0);
+    myMesh.rotation.set(defaultRotation.x, defaultRotation.y, defaultRotation.z);
 
     // Reset sliders to initial model position
     document.getElementById('scaleSlider').value = 1;
-    document.getElementById('rotateXSlider').value = -90;
-    document.getElementById('rotateYSlider').value = 0;
-    document.getElementById('rotateZSlider').value = 0;
+    document.getElementById('rotateXSlider').value = defaultRotationDegrees.x;
+    document.getElementById('rotateYSlider').value = defaultRotationDegrees.y;
+    document.getElementById('rotateZSlider').value = defaultRotationDegrees.z;
     document.getElementById('lightSlider').value = 45;
     document.getElementById('lightHeightSlider').value = 2;
 
